@@ -191,6 +191,12 @@ if(Qt5Core_FOUND)
 	set(QT_INCLUDE_DIRS ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS})
 	set(QT_LIBRARIES Qt5::Gui Qt5::Widgets)
 	add_definitions(${Qt5Gui_DEFINITIONS} ${Qt5Widgets_DEFINITIONS})
+    if(WIN32)
+        find_package(Qt5WinExtras REQUIRED)
+        set(QT_INCLUDE_DIRS ${QT_INCLUDE_DIRS} ${Qt5WinExtras_INCLUDE_DIRS})
+        set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::WinExtras)
+        add_definitions(${Qt5WinExtras_DEFINITIONS})
+    endif()
 else()
 	find_package(Qt6Core QUIET)
 endif()
@@ -449,6 +455,17 @@ set(DSView_HEADERS
     DSView/pv/ui/fn.h
     DSView/pv/ui/xtoolbutton.h
 )
+
+if(WIN32)
+set(DSView_SOURCES ${DSView_SOURCES}
+    DSView/pv/winnativewidget.cpp
+    DSView/pv/winshadow.cpp
+)
+set(DSView_HEADERS ${DSView_HEADERS}
+    DSView/pv/winnativewidget.h
+    DSView/pv/winshadow.h
+)
+endif()
  
 #===============================================================================
 #= libsigrok4DSL source
@@ -653,8 +670,10 @@ if(ENABLE_COTIRE)
 	cotire(${PROJECT_NAME})
 endif()
 
-message(STATUS "Output dir: ${CMAKE_CURRENT_SOURCE_DIR}/build.dir")
-set(EXECUTABLE_OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/build.dir")
+message(STATUS "Output dir: ${CMAKE_BINARY_DIR}/install")
+set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/install")
+set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install")
+
 
 #===============================================================================
 #= Installation
