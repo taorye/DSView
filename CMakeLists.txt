@@ -670,15 +670,9 @@ if(ENABLE_COTIRE)
 	cotire(${PROJECT_NAME})
 endif()
 
-if(WIN32)
-    message(STATUS "Output dir: ${CMAKE_CURRENT_SOURCE_DIR}/build.win32")
-    set(EXECUTABLE_OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/build.win32")
-    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/build.win32")
-else()
-message(STATUS "Output dir: ${CMAKE_CURRENT_SOURCE_DIR}/build.linux")
-set(EXECUTABLE_OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/build.linux")
-    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/build.linux")
-endif()
+message(STATUS "Output dir: ${CMAKE_BINARY_DIR}/install")
+set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/install")
+set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install")
 
 
 #===============================================================================
